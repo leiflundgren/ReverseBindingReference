@@ -12,7 +12,7 @@ namespace ReverseBindingReference
     public class AdditionalProperties
     {
         public static int instance_count = 0;
-        public AdditionalProperties(ObliqueClass outer)
+        public AdditionalProperties(ForeignClass outer)
         {
             valueIsOdd = IsOdd(outer);
             System.Threading.Interlocked.Increment(ref instance_count);
@@ -23,11 +23,11 @@ namespace ReverseBindingReference
             System.Threading.Interlocked.Decrement(ref instance_count);
         }
 
-        public bool IsOdd(ObliqueClass o)
+        public bool IsOdd(ForeignClass o)
         {
             return (o.someValue % 2) == 1;
         }
-
+        public Object MyExtraProperty { get; set; }
         public bool valueIsOdd;
         public bool favoriteNumber;
         public override string ToString()
@@ -36,9 +36,9 @@ namespace ReverseBindingReference
         }
     }
 
-    public class AdditionalPropertiesFactory: PropertyInjector<ObliqueClass, AdditionalProperties>.IAdditiveFactory
+    public class AdditionalPropertiesFactory: PropertyInjector<ForeignClass, AdditionalProperties>.IAdditiveFactory
     {
-        public AdditionalProperties CreateInstance(ObliqueClass outer)
+        public AdditionalProperties CreateInstance(ForeignClass outer)
         {
             return new AdditionalProperties(outer);
         }
@@ -46,9 +46,9 @@ namespace ReverseBindingReference
 
     public static class AdditionalPropertiesInjector
     {
-        public static PropertyInjector<ObliqueClass, AdditionalProperties> Injector = new PropertyInjector<ObliqueClass, AdditionalProperties>(new AdditionalPropertiesFactory());
+        public static PropertyInjector<ForeignClass, AdditionalProperties> Injector = new PropertyInjector<ForeignClass, AdditionalProperties>(new AdditionalPropertiesFactory());
 
-        public static AdditionalProperties GetAdditionalProperties(this ObliqueClass o, bool createIfNotExists=true)
+        public static AdditionalProperties GetAdditionalProperties(this ForeignClass o, bool createIfNotExists=true)
         {
             return Injector.GetFor(o, createIfNotExists);
         }

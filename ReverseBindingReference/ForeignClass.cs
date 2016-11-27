@@ -11,15 +11,15 @@ namespace ReverseBindingReference
     /// that we can not modify and add a property to.
     /// (We would want to have a property holding our AdditionalProperties.)
     /// </summary>
-    public class ObliqueClass
+    public class ForeignClass
     {
         public int someValue;
 
-        public ObliqueClass(int v)
+        public ForeignClass(int v)
         {
             someValue = v;
         }
-        public ObliqueClass()
+        public ForeignClass()
         {
             someValue = new Random().Next();
         }
