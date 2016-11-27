@@ -23,5 +23,18 @@ namespace ReverseBindingReference
         {
             someValue = new Random().Next();
         }
+
+        /// <summary>
+        /// Note: The project relies on Dictionaries working on this object.
+        /// If not custom IEqualityComparer<> must be used.
+        /// </summary>
+        public override bool Equals( object obj )
+        {
+            return base.Equals(obj);
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

@@ -25,21 +25,16 @@ namespace ReverseBindingReference
 
         public Additive GetFor(Base b, bool createIfNotExists = true)
         {
-            Additive a;
             lock ( pad )
             {
-                if ( createIfNotExists && Factory == null )
-                    return referencesTable.GetOrCreateValue(b);
-
-                if ( referencesTable.TryGetValue(b, out a) )
-                    return a;
-
-                if ( !createIfNotExists )
-                    return null;
-
-                a = Factory.CreateInstance(b);
-                referencesTable.Add(b, a);
-                return a;
+                return referencesTable.GetValue(b, ( b2 ) => {
+                    if ( !createIfNotExists )
+                        return null;
+                    else if ( Factory != null )
+                        return Factory.CreateInstance(b2);
+                    else
+                        return Activator.CreateInstance<Additive>();
+                });                
             }
         }
     }
